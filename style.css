@@ -1,0 +1,156 @@
+:root {
+  --bg: #0a0f1f;
+  --panel: #121a2f;
+  --line: #2d3a5e;
+  --text: #eaf0ff;
+  --muted: #9daac9;
+}
+
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #17264c, #0a0f1f 42%);
+  color: var(--text);
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+}
+
+.topbar {
+  background: rgba(6, 10, 23, 0.9);
+  border-bottom: 1px solid #2a3552;
+  position: sticky;
+  top: 0;
+  z-index: 1200;
+  backdrop-filter: blur(8px);
+}
+
+.brand-dot {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(140deg, #4f71ff, #4fd4ff);
+  color: #0c152e;
+}
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 14px 30px rgba(0, 0, 0, 0.25);
+}
+
+.form-control,
+.form-select,
+.btn {
+  border-radius: 10px;
+}
+
+.form-control,
+.form-select {
+  background: #091227;
+  border: 1px solid #2e3c63;
+  color: #dbe6ff;
+}
+
+.form-control:focus,
+.form-select:focus {
+  background: #0b1631;
+  color: #fff;
+  border-color: #6f8cff;
+  box-shadow: 0 0 0 .2rem rgba(111, 140, 255, .2);
+}
+
+.form-label {
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 4px;
+}
+
+#map {
+  height: min(70vh, 640px);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #2b385a;
+}
+
+.status {
+  font-size: 12px;
+  color: #b9c9ef;
+  border: 1px dashed #45598f;
+  border-radius: 10px;
+  padding: 8px 10px;
+  background: rgba(8, 13, 28, 0.6);
+}
+
+.metric {
+  border: 1px solid #2f3d62;
+  border-radius: 10px;
+  padding: 10px;
+  background: rgba(8, 13, 28, 0.75);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.metric .num {
+  font-size: 26px;
+  font-weight: 800;
+  color: #dbe9ff;
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.marker-badge {
+  min-width: 36px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  border: 2px solid #fff;
+  color: #fff;
+  font-weight: 700;
+  font-size: 11px;
+  box-shadow: 0 0 10px rgba(0,0,0,.35);
+}
+
+.leaflet-popup-content-wrapper,
+.leaflet-popup-tip {
+  background: #0e162d;
+  color: #f2f6ff;
+}
+
+.leaflet-popup-content a,
+.leaflet-popup-content button {
+  color: #9cc4ff;
+}
+
+body.light {
+  --bg: #eff4ff;
+  --panel: #ffffff;
+  --line: #d6def4;
+  --text: #1d2b52;
+  --muted: #62739d;
+  background: linear-gradient(180deg, #f7faff, #eef3ff);
+}
+
+body.light .topbar {
+  background: rgba(247, 250, 255, 0.95);
+  border-bottom-color: #d9e2f8;
+}
+
+body.light .form-control,
+body.light .form-select {
+  background: #fff;
+  border-color: #cfd8f1;
+  color: #24345f;
+}
+
+body.light .status,
+body.light .metric {
+  background: #f8fbff;
+}
+
+@media (max-width: 992px) {
+  #map { height: 56vh; }
+}

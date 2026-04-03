@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Maping V1 — Static Recode</title>
+  <meta name="description" content="Network mapping static app (GitHub Pages ready)." />
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <nav class="navbar navbar-dark topbar px-3">
+    <div class="d-flex align-items-center gap-2">
+      <span class="brand-dot"><i class="bi bi-diagram-3-fill"></i></span>
+      <div>
+        <div class="fw-bold">Maping V1</div>
+        <div class="small text-secondary">Static Recode (GitHub Pages)</div>
+      </div>
+    </div>
+    <div class="d-flex gap-2">
+      <button id="themeBtn" class="btn btn-sm btn-outline-light">🌙 Dark</button>
+    </div>
+  </nav>
+
+  <main class="container-fluid py-3">
+    <div class="row g-3">
+      <div class="col-12 col-xl-4">
+        <section class="panel p-3 mb-3">
+          <h2 class="h5 mb-3">Data Manager</h2>
+
+          <div class="mb-2">
+            <label class="form-label">Jenis Data</label>
+            <select id="nodeType" class="form-select">
+              <option value="server">Server</option>
+              <option value="odc">ODC</option>
+              <option value="odp">ODP</option>
+              <option value="client">Client</option>
+            </select>
+          </div>
+
+          <input type="hidden" id="editId" />
+
+          <div class="row g-2">
+            <div class="col-12">
+              <label class="form-label">Nama</label>
+              <input id="name" class="form-control" placeholder="Nama node" />
+            </div>
+
+            <div class="col-6 d-field d-odc d-odp">
+              <label class="form-label">Kapasitas</label>
+              <input id="capacity" type="number" class="form-control" placeholder="0" />
+            </div>
+
+            <div class="col-6 d-field d-client">
+              <label class="form-label">Status Client</label>
+              <select id="clientStatus" class="form-select">
+                <option value="active">active</option>
+                <option value="inactive">inactive</option>
+              </select>
+            </div>
+
+            <div class="col-12 d-field d-client">
+              <label class="form-label">Secret Username</label>
+              <input id="secretUsername" class="form-control" placeholder="contoh: 1/1/1:1_USER" />
+            </div>
+
+            <div class="col-12 d-field d-client">
+              <label class="form-label">Alamat</label>
+              <textarea id="address" class="form-control" rows="2" placeholder="Alamat client"></textarea>
+            </div>
+
+            <div class="col-6 d-field d-odc d-odp">
+              <label class="form-label">Server</label>
+              <select id="serverId" class="form-select"></select>
+            </div>
+
+            <div class="col-6 d-field d-odp d-client">
+              <label class="form-label">ODP</label>
+              <select id="odpId" class="form-select"></select>
+            </div>
+
+            <div class="col-12 d-field d-odp">
+              <label class="form-label">ODC</label>
+              <select id="odcId" class="form-select"></select>
+            </div>
+
+            <div class="col-12">
+              <label class="form-label">Deskripsi</label>
+              <textarea id="description" class="form-control" rows="2" placeholder="Catatan..."></textarea>
+            </div>
+
+            <div class="col-6">
+              <label class="form-label">Latitude</label>
+              <input id="latitude" class="form-control" placeholder="-6.2" />
+            </div>
+            <div class="col-6">
+              <label class="form-label">Longitude</label>
+              <input id="longitude" class="form-control" placeholder="106.8" />
+            </div>
+          </div>
+
+          <div class="d-flex gap-2 mt-3 flex-wrap">
+            <button id="saveBtn" class="btn btn-primary">Simpan</button>
+            <button id="resetBtn" class="btn btn-outline-secondary">Reset Form</button>
+            <button id="pickBtn" class="btn btn-outline-info">Pick dari Map</button>
+          </div>
+        </section>
+
+        <section class="panel p-3 mb-3">
+          <h2 class="h6">Cari Lokasi (Nominatim)</h2>
+          <div class="input-group mb-2">
+            <input id="geoSearch" class="form-control" placeholder="Cari alamat/lokasi..." />
+            <button id="geoBtn" class="btn btn-outline-light">Cari</button>
+          </div>
+          <div id="geoList" class="list-group small"></div>
+        </section>
+
+        <section class="panel p-3">
+          <h2 class="h6">Backup Data</h2>
+          <div class="d-flex gap-2 flex-wrap">
+            <button id="exportBtn" class="btn btn-outline-success btn-sm">Export JSON</button>
+            <label class="btn btn-outline-warning btn-sm mb-0" for="importFile">Import JSON</label>
+            <input id="importFile" type="file" accept="application/json" hidden />
+            <button id="demoBtn" class="btn btn-outline-info btn-sm">Demo Data</button>
+            <button id="wipeBtn" class="btn btn-outline-danger btn-sm">Kosongkan Data</button>
+          </div>
+          <div id="status" class="status mt-2">Siap.</div>
+        </section>
+      </div>
+
+      <div class="col-12 col-xl-8">
+        <section class="panel p-2 p-md-3 mb-3">
+          <div class="d-flex justify-content-between align-items-center mb-2">
+            <h2 class="h6 mb-0">Peta Network</h2>
+            <div class="small text-secondary">Klik marker untuk Edit/Hapus</div>
+          </div>
+          <div id="map"></div>
+        </section>
+
+        <section class="panel p-3">
+          <h2 class="h6">Ringkasan</h2>
+          <div class="row g-2 text-center">
+            <div class="col-6 col-md-3"><div class="metric"><div id="mServer" class="num">0</div><div>Server</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric"><div id="mOdc" class="num">0</div><div>ODC</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric"><div id="mOdp" class="num">0</div><div>ODP</div></div></div>
+            <div class="col-6 col-md-3"><div class="metric"><div id="mClient" class="num">0</div><div>Client</div></div></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
