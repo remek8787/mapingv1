@@ -1,0 +1,25 @@
+# Aktifkan Rewrite Engine
+RewriteEngine On
+
+# Blok akses langsung ke file sensitif
+<FilesMatch "^(config\.php|auth\.php|activeconnection\.php|secret\.php)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>
+
+# Jangan izinkan akses ke .htaccess sendiri
+<Files .htaccess>
+  Order allow,deny
+  Deny from all
+</Files>
+
+# Redirect user yang akses root ke login.php (kalau belum login)
+DirectoryIndex login.php
+
+# Proteksi folder .git, .env, dsb
+RedirectMatch 404 /(\.git|\.env|composer\.json|composer\.lock)
+
+# Optional: URL rapi tanpa .php
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}\.php -f
+RewriteRule ^(.*)$ $1.php [L]
